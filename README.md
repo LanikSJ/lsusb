@@ -77,6 +77,7 @@ Please report any bugs or issues you find. Thanks!
 
 ## 🗒️ License
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0a40470f3a524b9dbe0918c53fc64e61)](https://app.codacy.com/gh/LanikSJ/lsusb?utm_source=github.com&utm_medium=referral&utm_content=LanikSJ/lsusb&utm_campaign=Badge_Grade)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://en.wikipedia.org/wiki/MIT_License)
 
 ## 💰 Donate
