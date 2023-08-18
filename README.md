@@ -1,19 +1,42 @@
-lsusb command for Mac OS X
-==========================
+# lsusb Command for macOS
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f56c0620f67f464983aa51019d558027)](https://app.codacy.com/gh/LanikSJ/lsusb/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+![GitHub Repo Size](https://img.shields.io/github/repo-size/laniksj/lsusb)
+![GitHub Code Size in Bytes](https://img.shields.io/github/languages/code-size/laniksj/lsusb)
+![GitHub Last Commit](https://img.shields.io/github/last-commit/laniksj/lsusb)
+![GitHub Commit Activity](https://img.shields.io/github/commit-activity/m/laniksj/lsusb)
+
+- [Description](#📝-description)
+- [Installation](#💾-installation)
+     - [Manual](#⬇-manual)
+     - [Homebrew](#🍻-homebrew)
+- [Help](#🙋-help)
+- [Bugs](#🐛-bugs)
+- [License](#🗒️-license)
+- [Donate](#💰-donate)
+
+## 📝 Description
 
 This is an utility to easily list USB devices in Mac OS X, just like the `lsusb` command in Linux. It leverages the data from the `system_profiler SPUSBDataType` built-in command available in Mac. You can type `lsusb -v` to get the unmodified output of `system_profiler SPUSBDataType`.
 
-To install, clone the repository and copy to a location available in your PATH, for example `sudo cp lsusb /usr/sbin`. You can also install it with [Homebrew](http://brew.sh):
+## 💾 Installation
 
+### ⬇ Manual
+
+To install, clone the repository and copy to a location available in your PATH, for example `sudo cp lsusb /usr/sbin`.
+
+### 🍻 Homebrew
+
+You can also install it with [Homebrew](http://brew.sh)🍻:
+
+```bash
+brew update && brew install laniksj/tap/lsusb
 ```
-brew update             && \
-brew tap jlhonora/lsusb && \
-brew install lsusb
-```
+
+## 📝 Usage
 
 Here's an output example:
 
-```
+```bash
 Bus 036 Device 003: ID 04e8:6860 Samsung Electronics Co., Ltd. SAMSUNG_Android  Serial: 323062d3f6738057
 Bus 036 Device 002: ID 05ac:8507 Apple Inc. Built-in iSight  Serial: 8J97P2KF16V13A00
 Bus 038 Device 003: ID 1a40:0101 TERMINUS TECHNOLOGY INC. USB 2.0 Hub [MTT] 
@@ -30,9 +53,9 @@ Bus 004 Device 001: ID 05ac:8005 Apple Inc. OHCI Root Hub Simulation
 Bus 006 Device 001: ID 05ac:8005 Apple Inc. OHCI Root Hub Simulation
 ```
 
-## Usage ##
+## 🙋 Help
 
-```
+```bash
 List USB devices
   -v  Increase verbosity (show output of "system_profiler SPUSBDataType")
   -s  [[bus]:][devnum]
@@ -48,3 +71,15 @@ List USB devices
 ```
 
 For a more accurate usage description type `man lsusb` or `man man/lsusb.8` if inside the script's directory.
+
+## 🐛 Bugs
+
+Please report any bugs or issues you find. Thanks!
+
+## 🗒️ License
+
+[![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://en.wikipedia.org/wiki/MIT_License)
+
+## 💰 Donate
+
+[![Patreon](https://img.shields.io/badge/patreon-donate-blue.svg)](https://www.patreon.com/laniksj/overview)
