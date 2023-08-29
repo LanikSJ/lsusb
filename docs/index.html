@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="description" content="lsusb Command for macOS : ">
+
+  <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+  <link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+  <title>lsusb Command for macOS</title>
+  <meta name="generator" content="Jekyll v3.9.3" />
+  <meta property="og:title" content="lsusb Command for macOS" />
+  <meta property="og:locale" content="en_US" />
+  <meta name="description" content="lsusb command for macOS" />
+  <meta property="og:description" content="lsusb command for macOS" />
+  <link rel="canonical" href="https://laniksj.github.io/lsusb/" />
+  <meta property="og:url" content="https://laniksj.github.io/lsusb/" />
+  <meta property="og:site_name" content="lsusb" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="twitter:title" content="lsusb Command for macOS" />
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebSite","description":"lsusb command for macOS","headline":"lsusb Command for macOS","name":"lsusb","url":"https://laniksj.github.io/lsusb/"}</script>
+  <!-- End Jekyll SEO tag -->
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div id="header_wrap" class="outer">
+    <header class="inner">
+      <a id="forkme_banner" href="https://github.com/LanikSJ/lsusb">View on GitHub</a>
+
+      <h1 id="project_title">lsusb Command for macOS</h1>
+      <h2 id="project_tagline"></h2>
+
+    </header>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+        <p><a href="https://app.codacy.com/gh/LanikSJ/lsusb/dashboard?utm_source=gh&amp;utm_medium=referral&amp;utm_content=&amp;utm_campaign=Badge_grade"><img src="https://app.codacy.com/project/badge/Grade/f56c0620f67f464983aa51019d558027" alt="Codacy Badge" /></a>
+          <img src="https://img.shields.io/github/repo-size/laniksj/lsusb" alt="GitHub repo size">
+          <img src="https://img.shields.io/github/languages/code-size/laniksj/lsusb" alt="GitHub Code Size in Bytes">
+          <img src="https://img.shields.io/github/last-commit/laniksj/lsusb" alt="GitHub Last Commit">
+          <img src="https://img.shields.io/github/commit-activity/m/laniksj/lsusb" alt="GitHub Commit Activity"></p>
+          <ul>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#installation">Installation</a>
+              <ul>
+                <li><a href="#manual">Manual</a></li>
+                <li><a href="#homebrew">Homebrew</a></li>
+              </ul>
+            </li>
+            <li><a href="#help">Help</a></li>
+            <li><a href="#bugs">Bugs</a></li>
+            <li><a href="#license">License</a></li>
+            <li><a href="#donate">Donate</a></li>
+          </ul> 
+        <h2>
+            <a id="#description" class="anchor" href="#description" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>📝 Description</h2>
+            <p>This is an utility to easily list USB devices in Mac OS X, just like the <code class="language-plaintext highlighter-rouge">lsusb</code> command in Linux. It leverages the data from the <code class="language-plaintext highlighter-rouge">system_profiler SPUSBDataType</code> built-in command available in Mac. You can type <code class="language-plaintext highlighter-rouge">lsusb -v</code> to get the unmodified output of <code class="language-plaintext highlighter-rouge">system_profiler SPUSBDataType</code>.</p>
+        <h2>
+            <a id="#installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>💾 Installation</h2>
+        <h3>
+          <a id="#manual" class="anchor" href="#manual" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>⬇ Manual</h3>
+          <p>To install, clone the repository and copy to a location available in your PATH, for example <code class="language-plaintext highlighter-rouge">sudo cp lsusb /usr/sbin</code>.</p>
+        <h3>
+          <a id="#homebrew" class="anchor" href="#homebrew" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>🍻 Homebrew</h3>
+          <p>You can also install it with <a href="http://brew.sh">Homebrew</a>🍻:</p>
+          <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew update <span class="o">&amp;&amp;</span> brew <span class="nb">install </span>laniksj/tap/lsusb</code></pre></div></div>
+        <h2>
+          <a id="#usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>📝 Usage</h2>
+          <p>Here’s an output example:</p>       
+          <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Bus 036 Device 003: ID 04e8:6860 Samsung Electronics Co., Ltd. SAMSUNG_Android  Serial: 323062d3f6738057
+Bus 036 Device 002: ID 05ac:8507 Apple Inc. Built-in iSight  Serial: 8J97P2KF16V13A00
+Bus 038 Device 003: ID 1a40:0101 TERMINUS TECHNOLOGY INC. USB 2.0 Hub <span class="o">[</span>MTT] 
+Bus 038 Device 004: ID 0403:6001 Future Technology Devices International Limited FT232R USB UART  Serial: A601EFG9
+Bus 038 Device 005: ID 12d1:1038 Huawei Technologies Co., Ltd. Android Adapter  Serial: 509F2735096D
+Bus 038 Device 002: ID 05ac:8403 Apple Inc. Internal Memory Card Reader  Serial: 000000009833
+Bus 004 Device 003: ID 05ac:8242 Apple Inc. IR Receiver 
+Bus 004 Device 002: ID 05ac:0236 Apple Inc. Apple Internal Keyboard / Trackpad 
+Bus 006 Device 002: ID 0a5c:4500 Broadcom Corp. BRCM2046 Hub 
+Bus 006 Device 003: ID 05ac:8213 Apple Inc. Bluetooth USB Host Controller  Serial: 002608CCAC6F
+Bus 036 Device 001: ID 05ac:8006 Apple Inc. EHCI Root Hub Simulation 
+Bus 038 Device 001: ID 05ac:8006 Apple Inc. EHCI Root Hub Simulation 
+Bus 004 Device 001: ID 05ac:8005 Apple Inc. OHCI Root Hub Simulation 
+Bus 006 Device 001: ID 05ac:8005 Apple Inc. OHCI Root Hub Simulation</code></pre></div></div>
+        
+        <h2>
+          <a id="#help" class="anchor" href="#help" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>🙋 Help</h2>
+          <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>List USB devices
+  <span class="nt">-v</span>  Increase verbosity <span class="o">(</span>show output of <span class="s2">"system_profiler SPUSBDataType"</span><span class="o">)</span>
+  <span class="nt">-s</span>  <span class="o">[[</span>bus]:][devnum]
+      Show only devices with specified device and/or
+      bus numbers <span class="o">(</span><span class="k">in </span>decimal<span class="o">)</span>
+  <span class="nt">-d</span>  <span class="o">[</span>vendor]:[product]
+      Show only devices with the specified vendor and
+      product ID numbers <span class="o">(</span><span class="k">in </span>hexadecimal<span class="o">)</span>
+  <span class="nt">-p</span>  Display manufacturer names <span class="k">in </span>parentheses
+  <span class="nt">-t</span>  Dump the physical USB device hierarchy as a tree
+  <span class="nt">-V</span>  Show version of program
+  <span class="nt">-h</span>  Show usage and <span class="nb">help</span></code></pre></div></div>
+        <h2>
+            <a id="bugs" class="anchor" href="#bugs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>🐛 Bugs</h2>
+        <p>Please report any bugs or issues you find. Thanks!</p>
+        <h2>
+            <a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>🗒️ License</h2>
+        <p><a href="https://en.wikipedia.org/wiki/MIT_License"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a></p>
+        <h2>
+            <a id="donate" class="anchor" href="#donate" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>💰 Donate</h2>
+        <p><a href="https://www.patreon.com/laniksj/overview"><img src="https://img.shields.io/badge/patreon-donate-blue.svg" alt="Patreon"></a></p>
+    </section>
+    </div>
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+        <footer class="inner">
+            <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+        </footer>
+    </div>
+</body>
+
+</html>
