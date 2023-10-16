@@ -1,4 +1,4 @@
-name: LSUSB Self Test
+name: lsusb-self-test
 
 on:
   push:
