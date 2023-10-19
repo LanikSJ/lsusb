@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2066
 # lsusb (list USB devices) utility for macOS
 # Author: JLH, Sep 2013
 # Author: LanikSJ, Oct 2023
