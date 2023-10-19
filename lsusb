@@ -1,13 +1,23 @@
 #!/usr/bin/env bash
-# lsusb (list USB devices) utility for Mac OS X
+# lsusb (list USB devices) utility for macOS
 # Author: JLH, Sep 2013
+# Author: LanikSJ, Oct 2023
 #
-# Disclaimer: usage info and functionality from lsusb under Linux
+# Disclaimer: Usage info and functionality from lsusb under Linux
 
-verbose () { system_profiler SPUSBDataType 2>/dev/null; }
-version () { echo "lsusb for macOS 1.0.3"; }
-help ()  {
-  cat >&2 <<EOM
+# Turn on extended patterns
+shopt -s extglob
+
+verbose() { 
+	system_profiler SPUSBDataType 2>/dev/null
+}
+
+version() {
+	echo "lsusb for macOS 1.1"
+}
+
+help() {
+	cat >&2 <<EOM
 $(usage)
 List USB devices
   -v  Increase verbosity (show output of "system_profiler SPUSBDataType")
@@ -23,13 +33,16 @@ List USB devices
   -h  Show usage and help
 EOM
 }
-usage () { echo "Usage: $(basename "$0") [options]..."; }
+
+usage() {
+	echo "Usage: $(basename "$0") [options]..."
+}
 
 unknown_dev_num=127
-parse ()  {
+parse() {
 	# Get the name of the device, it is the first line that ends with a ':'
 	# Trim the string at the end
-	name=$(echo "$device" | head -2 | grep ":$"  | sed -e 's/^ *//g' -e 's/ *:$//g')
+	name=$(echo "$device" | head -2 | grep ":$" | sed -e 's/^ *//g' -e 's/ *:$//g')
 
 	# Get the speed
 	speed=$(echo "$device" | grep "Speed: " | awk -F':' '{print $2}' | sed 's/^ *[^0-9]*//g; s/ *$//; s/b\/sec$//; s/ //g')
@@ -49,7 +62,7 @@ parse ()  {
 
 	# Get the bus number. It's the first two hex digits of the Location ID.
 	# We'll convert to decimal later
-	bus_num=$(echo "$location" |  sed -e 's/^..\(..\).*/\1/;')
+	bus_num=$(echo "$location" | sed -e 's/^..\(..\).*/\1/;')
 	if [[ -z $bus_num ]]; then
 		bus_num="00"
 	fi
@@ -88,10 +101,22 @@ parse ()  {
 
 		# The PID depends on the speed of the hub, which we deduce from the controller driver.
 		PID=$(echo "$device" | grep "Controller Driver" | awk -F':' '{print $2}' | sed -e 's/0x//; s/^ *//g' -e 's/ *$//g; s/.*\(....\)$/\1/')
-	  	case "$PID" in
-			OHCI) PID="8005"; name="OHCI Root Hub Simulation"; speed="12M" ;;
-			EHCI) PID="8006"; name="EHCI Root Hub Simulation"; speed="480M" ;;
-			XHCI) PID="8007"; name="XHCI Root Hub USB 2.0 Simulation"; speed="5000M" ;;
+		case "$PID" in
+		OHCI)
+			PID="8005"
+			name="OHCI Root Hub Simulation"
+			speed="12M"
+			;;
+		EHCI)
+			PID="8006"
+			name="EHCI Root Hub Simulation"
+			speed="480M"
+			;;
+		XHCI)
+			PID="8007"
+			name="XHCI Root Hub USB 2.0 Simulation"
+			speed="5000M"
+			;;
 		esac
 	fi
 
@@ -99,7 +124,7 @@ parse ()  {
 	bus_num=$(printf "%03d" "0x0$bus_num")
 
 	# Strip the parentheses from manufacturer name unless so specified.
-	if [ -z "$parens" ]; then	
+	if [ -z "$parens" ]; then
 		manufacturer=$(echo "$manufacturer" | sed 's/(//; s/)//')
 	fi
 
@@ -118,49 +143,49 @@ parse ()  {
 
 	# Filter by VID/PID if given as input argument.
 	if [ -n "$vid_pid" ]; then
-	# Convert input vid to lower case.
-	   if [ -n "$(echo "$vid_pid" | grep ':')" ]; then
-		arg_vid=$(echo "$vid_pid" | awk -F':' '{print $1}' | sed 's/^0x//' | tr '[A-Z]' '[a-z]')
-		if [ -n "$arg_vid" ]; then
-			if [ $((16#$arg_vid)) -ne $((16#$VID)) ]; then
-				return 1
+		# Convert input vid to lower case.
+		if [ -n "$(echo "$vid_pid" | grep ':')" ]; then
+			arg_vid=$(echo "$vid_pid" | awk -F':' '{print $1}' | sed 's/^0x//' | tr '[:upper:]' '[:lower:]')
+			if [ -n "$arg_vid" ]; then
+				if [ $((16#$arg_vid)) -ne $((16#$VID)) ]; then
+					return 1
+				fi
 			fi
-		fi
-		arg_pid=$(echo "$vid_pid" | awk -F':' '{print $2}' | sed 's/^0x//' | tr '[A-Z]' '[a-z]')
-		if [ -n "$arg_pid" ]; then
-			if [ $((16#$arg_pid)) -ne $((16#$PID)) ]; then
-				return 1
+			arg_pid=$(echo "$vid_pid" | awk -F':' '{print $2}' | sed 's/^0x//' | tr '[:upper:]' '[:lower:]')
+			if [ -n "$arg_pid" ]; then
+				if [ $((16#$arg_pid)) -ne $((16#$PID)) ]; then
+					return 1
+				fi
 			fi
+		else
+			# Missing a colon is a syntax error in -d option
+			help
+			exit 1
 		fi
-	   else
-		# Missing a colon is a syntax error in -d option
-    		help
-		exit 1
-	   fi
 	fi
 
 	# Filter by BUS/DEV if given as input argument.
 	if [ -n "$bus_dev" ]; then
-	    if [ -n "$(echo "$bus_dev" | grep ':')" ]; then
-		# Convert input bus to lower case
-		arg_bus=$(echo "$bus_dev" | awk -F':' '{print $1}' | sed 's/^ *//; s/ *$//')
-		if [ -n "$arg_bus" ]; then
-			if [ "$arg_bus" -ne "$bus_num" ]; then
-				return 1
+		if [ -n "$(echo "$bus_dev" | grep ':')" ]; then
+			# Convert input bus to lower case
+			arg_bus=$(echo "$bus_dev" | awk -F':' '{print $1}' | sed 's/^ *//; s/ *$//')
+			if [ -n "$arg_bus" ]; then
+				if [ "$arg_bus" -ne "$bus_num" ]; then
+					return 1
+				fi
+			fi
+			# Strip leading and trailing spaces from argument.
+			arg_dev=$(echo "$bus_dev" | awk -F':' '{print $2}' | sed 's/^ *//; s/ *$//')
+			if [ -n "$arg_dev" ]; then
+				if [ "$arg_dev" -ne "$device_num" ]; then
+					return 1
+				fi
 			fi
 		fi
-		# Strip leading and trailing spaces from argument.
-		arg_dev=$(echo "$bus_dev" | awk -F':' '{print $2}' | sed 's/^ *//; s/ *$//')
-		if [ -n "$arg_dev" ]; then
-			if [ "$arg_dev" -ne "$device_num" ]; then
-				return 1
-			fi
-		fi
-	    fi
 	fi
 	# Special case: no colon after -s means device-only.
 	if [ -z "$(echo "$bus_dev" | grep ':')" ]; then
-	# Strip leading and trailing spaces from argument.
+		# Strip leading and trailing spaces from argument.
 		arg_dev=$(echo "$bus_dev" | sed 's/^ *//; s/ *$//')
 		if [ -n "$arg_dev" ]; then
 			if [ "$arg_dev" -ne "$device_num" ]; then
@@ -173,7 +198,7 @@ parse ()  {
 	exitcode=0
 }
 
-setup () {
+setup() {
 	# Save the data (if we haven't already).
 	if [ -z "$rawlog" ]; then
 		rawlog=$(verbose)
@@ -190,21 +215,21 @@ setup () {
 	treeflag="no"
 }
 
-cleanup () {
+cleanup() {
 	IFS=$OIFS
 	exit $exitcode
 }
 
-buildtreeline () {
-# Build a formatted line to be sorted for the tree.
-# The LocationID has the tree structure (0xbbdddddd):
-#   0x  -- always
-#   bb  -- bus number in hexadecimal
-#   dddddd -- up to six levels for the tree, each digit represents its
-#             position on that level
-#
-# So we start each line with the LocationID for sorting purposes, then append the rest of the line as we want it
-# Later, we'll do the sort, then strip off the LocationID for display purposes
+buildtreeline() {
+	# Build a formatted line to be sorted for the tree.
+	# The LocationID has the tree structure (0xbbdddddd):
+	#   0x  -- always
+	#   bb  -- bus number in hexadecimal
+	#   dddddd -- up to six levels for the tree, each digit represents its
+	#             position on that level
+	#
+	# So we start each line with the LocationID for sorting purposes, then append the rest of the line as we want it
+	# Later, we'll do the sort, then strip off the LocationID for display purposes
 
 	spaces=$(echo "$locationID" | sed 's/^0x...//; s/0//g; s/./ /g; s/.*/&&&&/')
 	if [ ${#spaces} -eq 0 ]; then
@@ -216,20 +241,19 @@ buildtreeline () {
 }
 
 get_devices() {
-	<<<"$rawlog" sed -e '/:$/i\
+	sed <<<"$rawlog" -e '/:$/i\
 #'
 }
 
 get_buses() {
-	<<<"$rawlog" awk -v first=1 '/Bus:$/ { flag = 1; if (first == 1) { first = 0 } else { print "#" }; print; next }; /:$/ && flag == 1 { flag = 0 }; flag'
+	awk <<<"$rawlog" -v first=1 '/Bus:$/ { flag = 1; if (first == 1) { first = 0 } else { print "#" }; print; next }; /:$/ && flag == 1 { flag = 0 }; flag'
 }
 
-tree () {
+tree() {
 	setup
 	treeflag="yes"
 
-	for device in $(get_devices)
-	do
+	for device in $(get_devices); do
 		# Skip null device lines
 		if [ "${#device}" -ne 1 ]; then
 			parse
@@ -238,8 +262,7 @@ tree () {
 		fi
 	done
 
-	for device in $(get_buses)
-	do
+	for device in $(get_buses); do
 		parse
 		buildtreeline
 		treedata="${treedata}""${treeline}"$'\n'
@@ -252,30 +275,37 @@ tree () {
 	treedata=$(echo "${treedata}" | sort)
 
 	# Now strip off leading Location ID and print to stdout.
-	for line in $treedata
-	do
-		echo "$line" | sed 's/^...........//'
+	for line in $treedata; do
+		"${line//^...........//}"
 	done
 
 	# Restore the IFS
 	cleanup
-
-	# Not really needed, as cleanup routine does the exit.
-	exit 0
 }
 
 # Parse options
 while getopts ":hvpd:s:Vt" opt; do
-  case "$opt" in
-    h) help ; exit 0 ;;     # help
-    v) verbose ; exit 0 ;;  # verbose
-    t) tree ; exit 0 ;;     # tree
-    V) version ; exit 0 ;;  # version
-    d) vid_pid=$OPTARG ;;   # filter
-    s) bus_dev=$OPTARG ;;   # filter
-    p) parens="yes" ;;	    # formatter
-    *) echo >&2 "lsusb: invalid option -- '$OPTARG'" ; help ; exit 1
-  esac
+	case "$opt" in
+	h)
+		help
+		;; # help
+	v)
+		verbose
+		;; # verbose
+	t)
+		tree
+		;; # tree
+	V)
+		version
+		;;                   # version
+	d) vid_pid=$OPTARG ;; # filter
+	s) bus_dev=$OPTARG ;; # filter
+	p) parens="yes" ;;    # formatter
+	*)
+		echo >&2 "lsusb: invalid option -- '$OPTARG'"
+		help
+		;;
+	esac
 done
 
 setup
@@ -299,24 +329,23 @@ setup
 # will not be interfered
 
 # Iterate over each entry
-for device in $(get_devices)
-do
-	parse
-	if [ $? -eq 0 ]; then
-		# Print the formatted entry
-		echo "Bus ""$bus_num"" Device ""$device_num"": ID ""$VID"":""$PID"" ""$manufacturer"" ""$name"" ""$serial_str"
-	fi
-done
+if [ -z "$get_devices" ]; then
+	for device in $(get_devices); do
+		if parse; then
+			# Print the formatted entry
+			echo "Bus ""$bus_num"" Device ""$device_num"": ID ""$VID"":""$PID"" ""$manufacturer"" ""$name"" ""$serial_str"
+		fi
+	done
+fi
 
-echo "Buses:"
-for device in $(get_buses)
-do
-	parse
-	if [ $? -eq 0 ]; then
-		# Print the formatted entry
-		echo "Bus ""$bus_num"" Device ""$device_num"": ID ""$VID"":""$PID"" ""$manufacturer"" ""$name"" ""$serial_str"
-	fi
-done
+if [ -n "$get_buses" ]; then
+	for device in $(get_buses); do
+		if parse; then
+			# Print the formatted entry
+			echo "Buses:" && echo "Bus ""$bus_num"" Device ""$device_num"": ID ""$VID"":""$PID"" ""$manufacturer"" ""$name"" ""$serial_str"
+		fi
+	done
+fi
 
 # Restore the IFS and exit
 cleanup
