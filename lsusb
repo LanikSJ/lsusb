@@ -103,21 +103,21 @@ parse() {
     # The PID depends on the speed of the hub, which we deduce from the controller driver.
     PID=$(echo "$device" | grep "Controller Driver" | awk -F':' '{print $2}' | sed -e 's/0x//; s/^ *//g' -e 's/ *$//g; s/.*\(....\)$/\1/')
     case "$PID" in
-      OHCI)
-        PID="8005"
-        name="OHCI Root Hub Simulation"
-        speed="12M"
-        ;;
-      EHCI)
-        PID="8006"
-        name="EHCI Root Hub Simulation"
-        speed="480M"
-        ;;
-      XHCI)
-        PID="8007"
-        name="XHCI Root Hub USB 2.0 Simulation"
-        speed="5000M"
-        ;;
+    OHCI)
+      PID="8005"
+      name="OHCI Root Hub Simulation"
+      speed="12M"
+      ;;
+    EHCI)
+      PID="8006"
+      name="EHCI Root Hub Simulation"
+      speed="480M"
+      ;;
+    XHCI)
+      PID="8007"
+      name="XHCI Root Hub USB 2.0 Simulation"
+      speed="5000M"
+      ;;
     esac
   fi
 
@@ -218,7 +218,7 @@ setup() {
 
 cleanup() {
   IFS=$OIFS
-  exit "$exitcode"
+  exit $exitcode
 }
 
 buildtreeline() {
@@ -236,9 +236,9 @@ buildtreeline() {
   if [ ${#spaces} -eq 0 ]; then
     spaces=" /:  "
   else
-    spaces="$spaces|__ "
+    spaces="${spaces}|__ "
   fi
-  treeline="$locationID${spaces}Bus ""$bus_num"".Dev ""$device_num"": ""$name"", ""$speed"
+  treeline="${locationID}${spaces}Bus ""${bus_num}"".Dev ""${device_num}"": ""${name}"", ""${speed}"
 }
 
 get_devices() {
@@ -254,29 +254,29 @@ tree() {
   setup
   treeflag="yes"
 
-  for device in "$(get_devices)"; do
+  for device in $(get_devices); do
     # Skip null device lines
     if [ "${#device}" -ne 1 ]; then
       parse
       buildtreeline
-      treedata="$treedata""$treeline"$'\n'
+      treedata="$treedata""${treeline}"$'\n'
     fi
   done
 
-  for device in "$(get_buses)"; do
+  for device in $(get_buses); do
     parse
     buildtreeline
-    treedata="$treedata""$treeline"$'\n'
+    treedata="${treedata}""${treeline}"$'\n'
   done
 
   # Strip off final \n.
-  treedata=$(echo "$treedata" | awk '{ prev_line = line; line = $0; } NR > 1 { print prev_line; } END { ORS = ""; print line; }')
+  treedata=$(echo "${treedata}" | awk '{ prev_line = line; line = $0; } NR > 1 { print prev_line; } END { ORS = ""; print line; }')
 
   # Sort by Location ID.
-  treedata=$(echo "$treedata" | sort)
+  treedata=$(echo "${treedata}" | sort)
 
   # Now strip off leading Location ID and print to stdout.
-  for line in "$treedata"; do
+  for line in $treedata; do
     "${line//^...........//}"
   done
 
@@ -287,25 +287,25 @@ tree() {
 # Parse options
 while getopts ":hvpd:s:Vt" opt; do
   case "$opt" in
-    h)
-      help
-      ;; # help
-    v)
-      verbose
-      ;; # verbose
-    t)
-      tree
-      ;; # tree
-    V)
-      version
-      ;;                  # version
-    d) vid_pid=$OPTARG ;; # filter
-    s) bus_dev=$OPTARG ;; # filter
-    p) parens="yes" ;;    # formatter
-    *)
-      echo >&2 "lsusb: invalid option -- '$OPTARG'"
-      help
-      ;;
+  h)
+    help
+    ;; # help
+  v)
+    verbose
+    ;; # verbose
+  t)
+    tree
+    ;; # tree
+  V)
+    version
+    ;;           # version
+  d) vid_pid=$OPTARG ;; # filter
+  s) bus_dev=$OPTARG ;; # filter
+  p) parens="yes" ;;  # formatter
+  *)
+    echo >&2 "lsusb: invalid option -- '$OPTARG'"
+    help
+    ;;
   esac
 done
 
@@ -331,7 +331,7 @@ setup
 
 # Iterate over each entry
 if [ -z "$get_devices" ]; then
-  for device in "$(get_devices)"; do
+  for device in $(get_devices); do
     if parse; then
       # Print the formatted entry
       echo "Bus ""$bus_num"" Device ""$device_num"": ID ""$VID"":""$PID"" ""$manufacturer"" ""$name"" ""$serial_str"
@@ -340,7 +340,7 @@ if [ -z "$get_devices" ]; then
 fi
 
 if [ -n "$get_buses" ]; then
-  for device in "$(get_buses)"; do
+  for device in $(get_buses); do
     if parse; then
       # Print the formatted entry
       echo "Buses:" && echo "Bus ""$bus_num"" Device ""$device_num"": ID ""$VID"":""$PID"" ""$manufacturer"" ""$name"" ""$serial_str"
