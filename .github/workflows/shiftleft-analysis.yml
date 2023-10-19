@@ -14,8 +14,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Perform Scan
-      uses: ShiftLeftSecurity/scan-action@master
+    - name: Security and Licence Scan
+      uses: ShiftLeftSecurity/scan-action@v1.3.0
       env:
         WORKSPACE: ""
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
