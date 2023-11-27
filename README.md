@@ -29,7 +29,7 @@ To install, clone the repository and copy to a location available in your PATH, 
 You can also install it with [Homebrew](http://brew.sh)🍻:
 
 ```bash
-brew update && brew install laniksj/tap/lsusb
+brew update && brew install laniksj/tap/lsusb-plus
 ```
 
 ## 📝 Usage
