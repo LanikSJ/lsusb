@@ -13,7 +13,7 @@ verbose() {
 }
 
 version() {
-  echo "lsusb for macOS 1.1.1"
+  echo "lsusb for macOS 1.1.2"
 }
 
 help() {
@@ -62,6 +62,7 @@ parse() {
 
   # Get the bus number. It's the first two hex digits of the Location ID.
   # We'll convert to decimal later
+  # shellcheck disable=SC2001
   bus_num=$(echo "$location" | sed -e 's/^..\(..\).*/\1/;')
   if [[ -z $bus_num ]]; then
     bus_num="00"
@@ -280,7 +281,7 @@ tree() {
 
   # Now strip off leading Location ID and print to stdout.
   for line in $treedata; do
-    "${line//^...........//}"
+    echo -e "$line"
   done
 
   # Restore the IFS
