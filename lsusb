@@ -16,10 +16,7 @@ verbose() {
 }
 
 version() {
-  echo "lsusb for macOS 1.1.2"
-
-  # Restore the IFS and exit
-  cleanup
+  echo "lsusb for macOS 1.1.3"
 }
 
 help() {
