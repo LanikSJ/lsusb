@@ -3,6 +3,8 @@ name: lsusb-self-test
 on:
   push:
     branches: [ master ]
+    paths:
+      - lsusb
   pull_request:
     branches: [ master ]
 
