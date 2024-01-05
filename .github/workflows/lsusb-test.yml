@@ -7,6 +7,8 @@ on:
       - lsusb
   pull_request:
     branches: [ master ]
+    paths:
+      - lsusb
 
 jobs:
   lsusb-test:
