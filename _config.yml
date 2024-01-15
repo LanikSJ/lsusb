@@ -1,6 +1,6 @@
 ---
-title: LSUSB
-description: LSUSB Command for macOS
+title: LSUSB Command for macOS
+description: Linux Port of LSUSB Command for macOS
 show_downloads: true
 google_analytics:
 theme: jekyll-theme-slate
