@@ -26,10 +26,15 @@ To install, clone the repository and copy to a location available in your PATH, 
 
 ### 🍻 Homebrew
 
-You can also install it with [Homebrew](http://brew.sh)🍻:
+You can also install it with [Homebrew](http://brew.sh)🍻 using my [Tap](https://github.com/LanikSJ/homebrew-tap):
 
 ```bash
 brew update && brew install laniksj/tap/lsusb-plus
+```
+or from official [Homebrew](http://brew.sh)🍻 [Tap](https://github.com/Homebrew/homebrew-core):
+
+```bash
+brew update && brew install lsusb-laniksj
 ```
 
 ## 📝 Usage
