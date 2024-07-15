@@ -1,12 +1,14 @@
-name: lsusb-self-test
+name: LSUSB Self Test
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
     paths:
       - lsusb
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
     paths:
       - lsusb
 
