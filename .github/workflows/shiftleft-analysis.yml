@@ -1,6 +1,9 @@
 name: ShiftLeft Scan
 
 on:
+  push:
+    branches:
+      - master
   pull_request:
     branches:
       - master
@@ -11,8 +14,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Security and Licence Scan
-      uses: ShiftLeftSecurity/scan-action@v1.3.0
+    - name: Perform Scan
+      uses: ShiftLeftSecurity/scan-action@master
       env:
         WORKSPACE: ""
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
