@@ -1,4 +1,4 @@
-# lsusb Command for macOS
+# 🐧 lsusb Command for macOS
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f56c0620f67f464983aa51019d558027)](https://app.codacy.com/gh/LanikSJ/lsusb/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 ![GitHub Repo Size](https://img.shields.io/github/repo-size/laniksj/lsusb)
@@ -6,14 +6,17 @@
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/laniksj/lsusb)
 ![GitHub Commit Activity](https://img.shields.io/github/commit-activity/m/laniksj/lsusb)
 
-- [Description](#📝-description)
-- [Installation](#💾-installation)
-  - [Manual](#⬇-manual)
-  - [Homebrew](#🍻-homebrew)
-- [Help](#🙋-help)
-- [Bugs](#🐛-bugs)
-- [License](#🗒️-license)
-- [Donate](#💰-donate)
+## 📑 Table of Contents
+
+- [📝 Description](#-description)
+- [💾 Installation](#-installation)
+  - [📥 Manual](#-manual)
+  - [🍻 Homebrew](#-homebrew)
+- [🧑‍💻 Usage](#-usage)
+- [🙋 Help](#-help)
+- [🐛 Bugs](#-bugs)
+- [📄 License](#-license)
+- [💰 Donate](#-donate)
 
 ## 📝 Description
 
@@ -21,7 +24,7 @@ This is an utility to easily list USB devices in Mac OS X, just like the `lsusb`
 
 ## 💾 Installation
 
-### ⬇ Manual
+### 📥 Manual
 
 To install, clone the repository and copy to a location available in your PATH, for example `sudo cp lsusb /usr/sbin`.
 
@@ -39,7 +42,7 @@ or from official [Homebrew](http://brew.sh)🍻 [Tap](https://github.com/Homebre
 brew update && brew install lsusb-laniksj
 ```
 
-## 📝 Usage
+## 🧑‍💻 Usage
 
 Here's an output example:
 
@@ -83,7 +86,7 @@ For a more accurate usage description type `man lsusb` or `man man/lsusb.8` if i
 
 Please report any bugs or issues you find. Thanks!
 
-## 🗒️ License
+## 📄 License
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://en.wikipedia.org/wiki/MIT_License)
 
