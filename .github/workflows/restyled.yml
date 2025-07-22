@@ -1,5 +1,9 @@
 name: Restyled
 
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   pull_request:
     types:
@@ -14,6 +18,7 @@ concurrency:
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   # For non-forks, we will maintain a sibling PR

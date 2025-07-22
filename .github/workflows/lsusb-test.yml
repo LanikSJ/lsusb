@@ -1,5 +1,8 @@
 name: LSUSB Self Test
 
+permissions:
+  contents: read
+
 on:
   push:
     branches:
