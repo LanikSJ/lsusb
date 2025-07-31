@@ -1,7 +1,7 @@
 name: Restyled
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
 
 on:
@@ -19,9 +19,6 @@ concurrency:
 jobs:
   # For non-forks, we will maintain a sibling PR
   restyled:
-    permissions:
-      contents: read
-      pull-requests: write
     if: |
       github.event.action != 'closed' &&
       github.event.pull_request.head.repo.full_name == github.repository
@@ -50,8 +47,6 @@ jobs:
 
   # For forks, we will only run (and print git-am instructions)
   restyled-fork:
-    permissions:
-      contents: read
     if: |
       github.event.action != 'closed' &&
       github.event.pull_request.head.repo.full_name != github.repository
@@ -65,9 +60,6 @@ jobs:
 
   # On closed events clean up any leftover Restyled PRs
   restyled-cleanup:
-    permissions:
-      contents: read
-      pull-requests: write
     if: ${{ github.event.action == 'closed' }}
     runs-on: ubuntu-latest
     steps:
