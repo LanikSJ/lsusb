@@ -23,14 +23,14 @@ to be verbose and display detailed information about the devices shown.
 Show only devices in specified
 .I bus
 and/or
-.IR devnum . 
+.IR devnum .
 Both ID's are given in decimal and may be omitted.
 .TP
 \fB\-d\fP [\fIvendor\fP]\fB:\fP[\fIproduct\fP]
-Show only devices with the specified 
-.I vendor 
-and/or 
-.I product 
+Show only devices with the specified
+.I vendor
+and/or
+.I product
 ID.
 Both ID's are given in hexadecimal.
 .TP
@@ -52,20 +52,20 @@ Print help to standard error,
 then exit successfully.
 
 .SH RETURN VALUE
-If 
+If
 .B lsusb
 does not find any device matching all the filters, a non-zero exit code is returned.
 
 .SH NOTES
 The
 .B -p
-(parentheses) option is an enhancement. 
+(parentheses) option is an enhancement.
 
 .SH SEE ALSO
 .BR system_profiler (8).
 
 .SH CREDITS
-Modeled on the output of 
+Modeled on the output of
 .B lsusb
 by Thomas Sailer and using the output of
 .B system_profiler
@@ -82,13 +82,13 @@ filters.
 .B -v
 and
 .B -t
-use the output of 
+use the output of
 .B system_profiler
 and thus do not conform to the Linux standard.
 .P
 The
 .B -D
-(Device) option is not implemented. 
+(Device) option is not implemented.
 GNU long options are not implemented.
 .P
 Please report other bugs at https://github.com/LanikSJ/lsusb
