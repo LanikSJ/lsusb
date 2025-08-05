@@ -20,23 +20,30 @@
 
 ## 📝 Description
 
-This is an utility to easily list USB devices in Mac OS X, just like the `lsusb` command in Linux. It leverages the data from the `system_profiler SPUSBDataType` built-in command available in Mac. You can type `lsusb -v` to get the unmodified output of `system_profiler SPUSBDataType`.
+This is an utility to easily list USB devices in Mac OS X, just like the
+`lsusb` command in Linux. It leverages the data from the
+`system_profiler SPUSBDataType` built-in command available in Mac. You can
+type `lsusb -v` to get the unmodified output of
+`system_profiler SPUSBDataType`.
 
 ## 💾 Installation
 
 ### 📥 Manual
 
-To install, clone the repository and copy to a location available in your PATH, for example `sudo cp lsusb /usr/sbin`.
+To install, clone the repository and copy to a location available in your
+PATH, for example `sudo cp lsusb /usr/sbin`.
 
 ### 🍻 Homebrew
 
-You can also install it with [Homebrew](http://brew.sh)🍻 using my [Tap](https://github.com/LanikSJ/homebrew-tap):
+You can also install it with [Homebrew](http://brew.sh)🍻 using my
+[Tap](https://github.com/LanikSJ/homebrew-tap):
 
 ```bash
 brew update && brew install laniksj/tap/lsusb-plus
 ```
 
-or from official [Homebrew](http://brew.sh)🍻 [Tap](https://github.com/Homebrew/homebrew-core):
+or from official [Homebrew](http://brew.sh)🍻
+[Tap](https://github.com/Homebrew/homebrew-core):
 
 ```bash
 brew update && brew install lsusb-laniksj
@@ -80,7 +87,8 @@ List USB devices
   -h  Show usage and help
 ```
 
-For a more accurate usage description type `man lsusb` or `man man/lsusb.8` if inside the script's directory.
+For a more accurate usage description type `man lsusb` or
+`man man/lsusb.8` if inside the script's directory.
 
 ## 🐛 Bugs
 
