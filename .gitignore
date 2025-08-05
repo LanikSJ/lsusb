@@ -1,3 +1,17 @@
+# Gitignore for LanikSJ/lsusb
+
+# General ignores
 .DS_Store
 .*.sw*
+
+# Project specific ignores
 lsusb-iokit.xcodeproj/
+
+# macOS specific ignores
+.localized
+.Trashes
+.Spotlight-V100
+.TemporaryItems
+.fseventsd
+.VolumeIcon.icns
+.com.apple.timemachine.donotbackup
