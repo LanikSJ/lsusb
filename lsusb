@@ -10,7 +10,7 @@ shopt -s extglob
 
 # Determine the appropriate system_profiler data type based on macOS version
 major_version=$(sw_vers -productVersion 2>/dev/null | cut -d. -f1)
-if [ "$major_version" -ge 12 ] 2>/dev/null; then
+if [ "$major_version" -ge 26 ] 2>/dev/null; then
     host_type="SPUSBHostDataType"
 else
     host_type="SPUSBDataType"
