@@ -1,22 +1,31 @@
 #!/usr/bin/env bash
 # lsusb (list USB devices) utility for macOS
 # Author: JLH, Sep 2013
-# Author: LanikSJ, Oct 2023
+# Author: LanikSJ, Oct 2023 - 2025
 #
 # Disclaimer: Usage info and functionality from lsusb under Linux
 
 # Turn on extended patterns
 shopt -s extglob
 
+# Determine the appropriate system_profiler data type based on macOS version
+major_version=$(sw_vers -productVersion 2>/dev/null | cut -d. -f1)
+if [ "$major_version" -ge 12 ] 2>/dev/null; then
+    host_type="SPUSBHostDataType"
+else
+    host_type="SPUSBDataType"
+fi
+
 verbose() {
-  system_profiler SPUSBDataType 2>/dev/null
+  # Get the full output of system_profiler
+  system_profiler "$host_type" 2>/dev/null
 
   # Restore the IFS and exit
   cleanup
 }
 
 version() {
-  echo "lsusb for macOS 1.1.3"
+  echo "lsusb for macOS 1.1.4"
 
   # Restore the IFS and exit
   cleanup
@@ -26,7 +35,7 @@ help() {
   cat >&2 <<EOM
 $(usage)
 List USB devices
-  -v  Increase verbosity (show output of "system_profiler SPUSBDataType")
+  -v  Increase verbosity (show output of "system_profiler $host_type")
   -s  [[bus]:][devnum]
       Show only devices with specified device and/or
       bus numbers (in decimal)
