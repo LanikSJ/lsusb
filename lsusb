@@ -295,7 +295,7 @@ tree() {
   setup
   treeflag="yes"
 
-  for device in $(get_devices); do
+  for device in "$(get_devices)"; do
     # Skip null device lines
     if [ "${#device}" != 1 ]; then
       parse
@@ -304,7 +304,7 @@ tree() {
     fi
   done
 
-  for device in $(get_buses); do
+  for device in "$(get_buses)"; do
     parse
     buildtreeline
     treedata="$treedata""$treeline"$'\n'
@@ -319,7 +319,7 @@ tree() {
   # Now strip off leading Location ID and print to stdout.
   while IFS= read -r line; do
     echo -e "$line"
-  done <<< "$treedata"
+  done <<<"$treedata"
 
   # Restore the IFS
   cleanup
@@ -372,7 +372,7 @@ setup
 
 # Iterate over each entry
 if [ -z "$get_devices" ]; then
-  for device in $(get_devices); do
+  for device in "$(get_devices)"; do
     if parse; then
       # Print the formatted entry
       echo "Bus ""$bus_num"" Device ""$device_num"": ID ""$VID"":""$PID"" ""$manufacturer"" ""$name"" ""$serial_str"
@@ -381,7 +381,7 @@ if [ -z "$get_devices" ]; then
 fi
 
 if [ -n "$get_buses" ]; then
-  for device in $(get_buses); do
+  for device in "$(get_buses)"; do
     if parse; then
       # Print the formatted entry
       echo "Buses:" && echo "Bus ""$bus_num"" Device ""$device_num"": ID ""$VID"":""$PID"" ""$manufacturer"" ""$name"" ""$serial_str"
