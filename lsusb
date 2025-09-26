@@ -74,7 +74,10 @@ parse() {
   # Get the VID
   VID=$(echo "$VID_all" | awk -F ' ' '{print $1}' | sed 's/^ *//; s/ *$//')
   # Get the manufacturer string
-  manufacturer=$(echo "$VID_all" | cut -d ' ' -f 2- | sed 's/^ *//; s/ *$//')
+  manufacturer=$(echo "$device" | grep "Manufacturer" | sed -e 's/Manufacturer: //; s/^ *//g; s/ *$//g;')
+  if [ -z "$manufacturer" ]; then
+    manufacturer=$(echo "$VID_all" | awk -F ' ' '{print $2}' | sed 's/^ *//; s/ *$//')
+  fi
 
   # Get the Location Id
   location=$(echo "$device" | grep "Location ID" | sed -e 's/Location ID://; s/^ *//g; s/ *$//g;')
