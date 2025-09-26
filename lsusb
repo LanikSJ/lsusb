@@ -25,6 +25,7 @@ verbose() {
 }
 
 version() {
+  # Show version of program
   echo "lsusb for macOS 1.1.4"
 
   # Restore the IFS and exit
