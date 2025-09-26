@@ -21,14 +21,16 @@ verbose() {
   system_profiler "$host_type" 2>/dev/null
 
   # Restore the IFS and exit
+  exitcode=0
   cleanup
 }
 
 version() {
   # Show version of program
-  echo "lsusb for macOS 1.1.4"
+  echo "lsusb for macOS 1.1.6"
 
   # Restore the IFS and exit
+  exitcode=0
   cleanup
 }
 
@@ -50,6 +52,7 @@ List USB devices
 EOM
 
   # Restore the IFS and exit
+  exitcode=0
   cleanup
 }
 
@@ -74,10 +77,17 @@ parse() {
   # Get the VID
   VID=$(echo "$VID_all" | awk -F ' ' '{print $1}' | sed 's/^ *//; s/ *$//')
   # Get the manufacturer string
-  manufacturer=$(echo "$device" | grep "Manufacturer" | sed -e 's/Manufacturer: //; s/^ *//g; s/ *$//g;')
+  manufacturer=$(echo "$device" | sed -n 's/^Manufacturer: *//p')
   if [ -z "$manufacturer" ]; then
-    manufacturer=$(echo "$VID_all" | awk -F ' ' '{print $2}' | sed 's/^ *//; s/ *$//')
+    # Extract vendor name from VID_all (format: "VID (Vendor Name)")
+    temp_manufacturer=$(echo "$VID_all" | sed -n 's/.*(\(.*\)).*/\1/p')
+    if [ -n "$temp_manufacturer" ]; then
+      manufacturer="$temp_manufacturer"
+    fi
   fi
+
+  # Trim leading and trailing spaces
+  manufacturer=$(echo "$manufacturer" | sed 's/^ *//;s/ *$//')
 
   # Get the Location Id
   location=$(echo "$device" | grep "Location ID" | sed -e 's/Location ID://; s/^ *//g; s/ *$//g;')
@@ -307,9 +317,9 @@ tree() {
   treedata=$(echo "$treedata" | sort)
 
   # Now strip off leading Location ID and print to stdout.
-  for line in "$treedata"; do
+  while IFS= read -r line; do
     echo -e "$line"
-  done
+  done <<<"$treedata"
 
   # Restore the IFS
   cleanup
