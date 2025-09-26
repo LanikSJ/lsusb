@@ -319,7 +319,7 @@ tree() {
   # Now strip off leading Location ID and print to stdout.
   while IFS= read -r line; do
     echo -e "$line"
-  done <<< "$treedata"
+  done <<<"$treedata"
 
   # Restore the IFS
   cleanup
