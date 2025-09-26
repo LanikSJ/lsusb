@@ -11,9 +11,9 @@ shopt -s extglob
 # Determine the appropriate system_profiler data type based on macOS version
 major_version=$(sw_vers -productVersion 2>/dev/null | cut -d. -f1)
 if [ "$major_version" -ge 26 ] 2>/dev/null; then
-    host_type="SPUSBHostDataType"
+  host_type="SPUSBHostDataType"
 else
-    host_type="SPUSBDataType"
+  host_type="SPUSBDataType"
 fi
 
 verbose() {
@@ -49,8 +49,8 @@ List USB devices
   -h  Show usage and help
 EOM
 
-# Restore the IFS and exit
-cleanup
+  # Restore the IFS and exit
+  cleanup
 }
 
 usage() {
@@ -122,21 +122,21 @@ parse() {
     # The PID depends on the speed of the hub, which we deduce from the controller driver.
     PID=$(echo "$device" | grep "Controller Driver" | awk -F':' '{print $2}' | sed -e 's/0x//; s/^ *//g' -e 's/ *$//g; s/.*\(....\)$/\1/')
     case "$PID" in
-    OHCI)
-      PID="8005"
-      name="OHCI Root Hub Simulation"
-      speed="12M"
-      ;;
-    EHCI)
-      PID="8006"
-      name="EHCI Root Hub Simulation"
-      speed="480M"
-      ;;
-    XHCI)
-      PID="8007"
-      name="XHCI Root Hub USB 2.0 Simulation"
-      speed="5000M"
-      ;;
+      OHCI)
+        PID="8005"
+        name="OHCI Root Hub Simulation"
+        speed="12M"
+        ;;
+      EHCI)
+        PID="8006"
+        name="EHCI Root Hub Simulation"
+        speed="480M"
+        ;;
+      XHCI)
+        PID="8007"
+        name="XHCI Root Hub USB 2.0 Simulation"
+        speed="5000M"
+        ;;
     esac
   fi
 
@@ -315,25 +315,25 @@ tree() {
 # Parse options
 while getopts ":hvpd:s:Vt" opt; do
   case "$opt" in
-  h)
-    help
-    ;; # help
-  v)
-    verbose
-    ;; # verbose
-  t)
-    tree
-    ;; # tree
-  V)
-    version
-    ;;           # version
-  d) vid_pid=$OPTARG ;; # filter
-  s) bus_dev=$OPTARG ;; # filter
-  p) parens="yes" ;;  # formatter
-  *)
-    echo >&2 "lsusb: invalid option -- '$OPTARG'"
-    help
-    ;;
+    h)
+      help
+      ;; # help
+    v)
+      verbose
+      ;; # verbose
+    t)
+      tree
+      ;; # tree
+    V)
+      version
+      ;;                  # version
+    d) vid_pid=$OPTARG ;; # filter
+    s) bus_dev=$OPTARG ;; # filter
+    p) parens="yes" ;;    # formatter
+    *)
+      echo >&2 "lsusb: invalid option -- '$OPTARG'"
+      help
+      ;;
   esac
 done
 
