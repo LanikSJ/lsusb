@@ -5,8 +5,25 @@ updates:
     directory: "/"
     schedule:
       interval: daily
+      time: "09:00"
+      timezone: "America/Los_Angeles"
     open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "github-actions"
+    groups:
+      checkout-actions:
+        patterns:
+          - "actions/checkout"
+      codeql-actions:
+        patterns:
+          - "github/codeql-action/*"
+      pages-actions:
+        patterns:
+          - "actions/configure-pages"
+          - "actions/jekyll-build-pages"
+          - "actions/upload-pages-artifact"
+          - "actions/deploy-pages"
     commit-message:
       prefix: "ci(deps)"
       prefix-development: "ci(deps-dev)"
-  
