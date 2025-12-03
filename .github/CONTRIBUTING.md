@@ -1,100 +1,190 @@
-# Contributing
+# Contributing to lsusb
 
-When contributing to this repository, please first discuss the change you
-wish to make via issue, email, or any other method with the owners of this
-repository before making a change.
+First off, thank you for considering contributing to lsusb! It's people like you that make this project better.
 
-Please note we have a code of conduct, please follow it in all your
-interactions with the project.
+## Table of Contents
 
-## Pull Request Process
-
-1. Ensure any install or build dependencies are removed before the end of
-   the layer when doing a build.
-2. Update the README.md with details of changes to the interface, this
-   includes new environment variables, exposed ports, useful file locations
-   and container parameters.
-3. Increase the version numbers in any examples files and the README.md to
-   the new version that this Pull Request would represent. The versioning
-   scheme we use is [SemVer](http://semver.org/).
-4. You may merge the Pull Request in once you have the sign-off of two
-   other developers, or if you do not have permission to do that, you may
-   request the second reviewer to merge it for you.
+- [Code of Conduct](#code-of-conduct)
+- [How Can I Contribute?](#how-can-i-contribute)
+- [Development Setup](#development-setup)
+- [Pull Request Process](#pull-request-process)
+- [Coding Guidelines](#coding-guidelines)
+- [Testing](#testing)
+- [Documentation](#documentation)
 
 ## Code of Conduct
 
+This project and everyone participating in it is governed by our Code of Conduct. By participating, you are expected to uphold this code.
+
 ### Our Pledge
 
-In the interest of fostering an open and welcoming environment, we as
-contributors and maintainers pledge to making participation in our project
-and our community a harassment-free experience for everyone, regardless of
-age, body size, disability, ethnicity, gender identity and expression,
-level of experience, nationality, personal appearance, race, religion, or
-sexual identity and orientation.
+We are dedicated to providing a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual identity and orientation.
 
 ### Our Standards
 
-Examples of behavior that contributes to creating a positive environment
-include:
-
+**Positive behaviors that contribute to a welcoming environment:**
 - Using welcoming and inclusive language
 - Being respectful of differing viewpoints and experiences
 - Gracefully accepting constructive criticism
 - Focusing on what is best for the community
 - Showing empathy towards other community members
 
-Examples of unacceptable behavior by participants include:
-
-- The use of sexualized language or imagery and unwelcome sexual attention
-  or advances
-- Trolling, insulting/derogatory comments, and personal or political
-  attacks
+**Unacceptable behaviors include:**
+- The use of sexualized language or imagery and unwelcome sexual attention or advances
+- Trolling, insulting/derogatory comments, and personal or political attacks
 - Public or private harassment
-- Publishing others' private information, such as a physical or electronic
-  address, without explicit permission
-- Other conduct which could reasonably be considered inappropriate in a
-  professional setting
-
-### Our Responsibilities
-
-Project maintainers are responsible for clarifying the standards of
-acceptable behavior and are expected to take appropriate and fair
-corrective action in response to any instances of unacceptable behavior.
-
-Project maintainers have the right and responsibility to remove, edit, or
-reject comments, commits, code, wiki edits, issues, and other
-contributions that are not aligned to this Code of Conduct, or to ban
-temporarily or permanently any contributor for other behaviors that they
-deem inappropriate, threatening, offensive, or harmful.
-
-### Scope
-
-This Code of Conduct applies both within project spaces and in public
-spaces when an individual is representing the project or its community.
-Examples of representing a project or community include using an official
-project e-mail address, posting via an official social media account, or
-acting as an appointed representative at an online or offline event.
-Representation of a project may be further defined and clarified by project
-maintainers.
+- Publishing others' private information without explicit permission
+- Other conduct which could reasonably be considered inappropriate in a professional setting
 
 ### Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project team at [forums.lanik.us](https://forums.lanik.us).
-All complaints will be reviewed and investigated and will result in a
-response that is deemed necessary and appropriate to the circumstances. The
-project team is obligated to maintain confidentiality with regard to the
-reporter of an incident. Further details of specific enforcement policies
-may be posted separately.
+Instances of unacceptable behavior may be reported by contacting the project team at [forums.lanik.us](https://forums.lanik.us). All complaints will be reviewed and investigated promptly and fairly.
 
-Project maintainers who do not follow or enforce the Code of Conduct in
-good faith may face temporary or permanent repercussions as determined by
-other members of the project's leadership.
+## How Can I Contribute?
 
-### Attribution
+### Reporting Bugs
 
-This Code of Conduct is adapted from the [Contributor Covenant][homepage],
-version 1.4, available at [http://contributor-covenant.org/version/1/4][version]
+Before creating bug reports, please check existing issues as you might find out that you don't need to create one. When you are creating a bug report, please include as many details as possible:
 
-[homepage]: http://contributor-covenant.org
-[version]: http://contributor-covenant.org/version/1/4/
+- **Use a clear and descriptive title**
+- **Describe the exact steps to reproduce the problem**
+- **Provide specific examples to demonstrate the steps**
+- **Describe the behavior you observed and what behavior you expected**
+- **Include screenshots and animated GIFs if possible**
+
+### Suggesting Enhancements
+
+Enhancement suggestions are tracked as GitHub issues. When creating an enhancement suggestion, please include:
+
+- **Use a clear and descriptive title**
+- **Provide a step-by-step description of the suggested enhancement**
+- **Provide specific examples to demonstrate the steps**
+- **Describe the current behavior and explain the behavior you expected**
+- **Explain why this enhancement would be useful**
+
+## Development Setup
+
+### Prerequisites
+
+- Ensure you have the necessary development tools installed
+- Clone the repository: `git clone https://github.com/LanikSJ/lsusb.git`
+- Install dependencies as specified in the project documentation
+
+### Getting Started
+
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes
+4. Run tests to ensure everything works
+5. Commit your changes: `git commit -m 'Add some amazing feature'`
+6. Push to the branch: `git push origin feature/amazing-feature`
+7. Open a Pull Request
+
+## Pull Request Process
+
+1. **Pre-submission Checklist:**
+   - [ ] Remove any install or build dependencies before the end of the layer when doing a build
+   - [ ] Update documentation with details of changes to the interface
+   - [ ] Increase version numbers appropriately
+   - [ ] Ensure your code follows the project's coding guidelines
+   - [ ] Add or update tests as necessary
+   - [ ] Ensure all tests pass
+   - [ ] Update the README.md with details of changes
+
+2. **Version Management:**
+   - Follow [Semantic Versioning](http://semver.org/)
+   - Update version numbers in example files and documentation
+
+3. **Review Requirements:**
+   - You may merge the Pull Request once you have approval from at least two maintainers
+   - If you don't have merge permissions, request the second reviewer to merge it for you
+   - Ensure CI/CD checks pass before requesting review
+
+4. **Post-Merge:**
+   - Delete your feature branch
+   - Update relevant documentation
+
+## Coding Guidelines
+
+### General Principles
+
+- Write clean, readable, and maintainable code
+- Follow existing code style and conventions
+- Add comments for complex logic
+- Keep functions focused and single-responsibility
+
+### Commit Messages
+
+Use clear and descriptive commit messages:
+
+```
+type(scope): brief description
+
+Longer explanation if needed
+
+Fixes #issue-number
+```
+
+**Types:**
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, etc.)
+- `refactor`: Code refactoring
+- `test`: Adding or updating tests
+- `chore`: Maintenance tasks
+
+### Code Style
+
+- Follow the existing code style in the project
+- Use meaningful variable and function names
+- Keep lines reasonably sized (max 120 characters)
+- Use consistent indentation
+
+## Testing
+
+### Running Tests
+
+- Ensure all existing tests pass before submitting
+- Add tests for new features and bug fixes
+- Run the test suite with: `make test` or the appropriate command
+
+### Test Coverage
+
+- Aim for comprehensive test coverage
+- Include both positive and negative test cases
+- Test edge cases and error conditions
+
+## Documentation
+
+### What to Document
+
+- New features and functionality
+- Changes to existing APIs
+- Configuration options
+- Installation and setup instructions
+
+### Documentation Standards
+
+- Use clear, concise language
+- Include code examples where appropriate
+- Keep documentation up-to-date with code changes
+- Use proper Markdown formatting
+
+## Additional Resources
+
+- [Project README](../README.md)
+- [Project Wiki](https://github.com/LanikSJ/lsusb/wiki)
+- [Issue Tracker](https://github.com/LanikSJ/lsusb/issues)
+
+## Questions?
+
+If you have questions about contributing, please:
+
+1. Check the existing documentation and issues
+2. Start a discussion in the issue tracker
+3. Contact the maintainers at [forums.lanik.us](https://forums.lanik.us)
+
+---
+
+**Thank you for contributing to lsusb!** 🎉
