@@ -10,18 +10,9 @@ updates:
       - "dependencies"
       - "github-actions"
     groups:
-      checkout-actions:
+      github-actions:
         patterns:
-          - "actions/checkout"
-      codeql-actions:
-        patterns:
-          - "github/codeql-action/*"
-      pages-actions:
-        patterns:
-          - "actions/configure-pages"
-          - "actions/jekyll-build-pages"
-          - "actions/upload-pages-artifact"
-          - "actions/deploy-pages"
+          - "*"
     commit-message:
       prefix: "ci(deps)"
       prefix-development: "ci(deps-dev)"
