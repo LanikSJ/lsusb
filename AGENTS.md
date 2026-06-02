@@ -1,4 +1,4 @@
-# AI Rules & Project Standards for lsusb
+# Agent Rules & Project Standards for lsusb
 
 ## Repository Overview
 
