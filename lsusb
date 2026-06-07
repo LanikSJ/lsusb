@@ -351,7 +351,7 @@ tree() {
   setup
   treeflag="yes"
 
-  for device in $(get_devices); do
+  for device in "$(get_devices)"; do
     # Skip null device lines
     if [ "${#device}" != 1 ]; then
       parse
@@ -360,7 +360,7 @@ tree() {
     fi
   done
 
-  for device in $(get_buses); do
+  for device in "$(get_buses)"; do
     parse
     buildtreeline
     treedata="$treedata""$treeline"$'\n'
@@ -427,14 +427,14 @@ setup
 # will not be interfered
 
 # Iterate over each entry
-for device in $(get_devices); do
+for device in "$(get_devices)"; do
   if parse; then
     # Print the formatted entry
     echo "Bus ""$bus_num"" Device ""$device_num"": ID ""$VID"":""$PID"" ""$manufacturer"" ""$name"" ""$serial_str"
   fi
 done
 
-for device in $(get_buses); do
+for device in "$(get_buses)"; do
   if parse; then
     # Print the formatted entry
     echo "Bus ""$bus_num"" Device ""$device_num"": ID ""$VID"":""$PID"" ""$manufacturer"" ""$name"" ""$serial_str"
