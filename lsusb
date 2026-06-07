@@ -60,7 +60,6 @@ usage() {
   echo "Usage: $(basename "$0") [options]..."
 }
 
-unknown_dev_num=127
 parse() {
   # Get the name of the device, it is the first line that ends with a ':'
   # Trim the string at the end
@@ -76,8 +75,8 @@ parse() {
   VID_all=$(echo "$device" | grep "Vendor ID" | awk -F':' '{print $2}' | sed -e 's/0x//; s/^ *//g' -e 's/ *$//g')
   # Get the VID
   VID=$(echo "$VID_all" | awk -F ' ' '{print $1}' | sed 's/^ *//; s/ *$//')
-  # Get the manufacturer string
-  manufacturer=$(echo "$device" | sed -n 's/^Manufacturer: *//p')
+  # Get the manufacturer string (the line is indented, so allow leading spaces)
+  manufacturer=$(echo "$device" | sed -n 's/^ *Manufacturer: *//p')
   if [ -z "$manufacturer" ]; then
     # Extract vendor name from VID_all (format: "VID (Vendor Name)")
     temp_manufacturer=$(echo "$VID_all" | sed -n 's/.*(\(.*\)).*/\1/p')
@@ -101,9 +100,10 @@ parse() {
   fi
 
   # Get the device number. It's after the '/' in the Location ID, already decimal.
+  # Tahoe no longer reports device numbers; show 000 rather than inventing one.
   device_num=$(echo "$location" | awk -F'/' '{print $2}')
   if [[ -z $device_num ]]; then
-    device_num=$((unknown_dev_num--))
+    device_num=0
   fi
   device_num=$(printf "%03d" "$device_num")
 
@@ -117,13 +117,15 @@ parse() {
     fi
 
     # Get the bus number, in hexadecimal. We'll convert to decimal later.
-    bus_num=$(echo "$device" | grep "Bus Number" | sed -e 's/Bus Number://' -e 's/0x//; s/^ *//g' -e 's/ *$//g')
-    if [[ -z $bus_num ]]; then
-      bus_num="00"
-    fi
+    # Tahoe buses have no Bus Number line; in that case keep the bus number
+    # and Location ID already derived from the bus's Location ID above.
+    bus_hex=$(echo "$device" | grep "Bus Number" | sed -e 's/Bus Number://' -e 's/0x//; s/^ *//g' -e 's/ *$//g')
+    if [[ -n $bus_hex ]]; then
+      bus_num="$bus_hex"
 
-    # Create a fake Location ID for sorting purposes, following the model.
-    locationID="0x${bus_num}000000"
+      # Create a fake Location ID for sorting purposes, following the model.
+      locationID="0x${bus_num}000000"
+    fi
 
     # Device Number is always 1.
     device_num="001"
@@ -132,20 +134,23 @@ parse() {
     VID="05ac"
     manufacturer="(Apple Inc.)"
 
-    # The PID depends on the speed of the hub, which we deduce from the controller driver.
-    PID=$(echo "$device" | grep "Controller Driver" | awk -F':' '{print $2}' | sed -e 's/0x//; s/^ *//g' -e 's/ *$//g; s/.*\(....\)$/\1/')
-    case "$PID" in
-      OHCI)
+    # The PID depends on the speed of the hub, which we deduce from the
+    # controller driver ("Host Controller Driver:" pre-Tahoe, "Driver:" on
+    # Tahoe). Match the controller type anywhere in the driver name; drivers
+    # like AppleEmbeddedUSBXHCIASMedia3142 don't end with it.
+    driver=$(echo "$device" | grep -E "(Controller)? Driver:" | awk -F':' '{print $2}' | tail -1)
+    case "$driver" in
+      *OHCI*)
         PID="8005"
         name="OHCI Root Hub Simulation"
         speed="12M"
         ;;
-      EHCI)
+      *EHCI*)
         PID="8006"
         name="EHCI Root Hub Simulation"
         speed="480M"
         ;;
-      XHCI)
+      *XHCI*)
         PID="8007"
         name="XHCI Root Hub USB 2.0 Simulation"
         speed="5000M"
@@ -160,9 +165,11 @@ parse() {
     bus_num='---'
   fi
 
-  # Strip the parentheses from manufacturer name unless so specified.
-  if [ -z "$parens" ]; then
-    manufacturer=$(echo "$manufacturer" | sed 's/(//; s/)//')
+  # Strip any parentheses from the manufacturer name, then add them back
+  # around the whole name if so specified.
+  manufacturer=$(echo "$manufacturer" | sed 's/(//; s/)//; s/^ *//; s/ *$//')
+  if [ -n "$parens" ] && [ -n "$manufacturer" ]; then
+    manufacturer="($manufacturer)"
   fi
 
   # Include serial number only if available.
@@ -210,14 +217,15 @@ parse() {
       # Convert input bus to lower case
       arg_bus=$(echo "$bus_dev" | awk -F':' '{print $1}' | sed 's/^ *//; s/ *$//')
       if [ -n "$arg_bus" ]; then
-        if [ "$arg_bus" != "$bus_num" ]; then
+        # Compare numerically: the parsed bus number is zero-padded ("008").
+        if [ "$arg_bus" -ne "$bus_num" ]; then
           return 1
         fi
       fi
       # Strip leading and trailing spaces from argument.
       arg_dev=$(echo "$bus_dev" | awk -F':' '{print $2}' | sed 's/^ *//; s/ *$//')
       if [ -n "$arg_dev" ]; then
-        if [ "$arg_dev" != "$device_num" ]; then
+        if [ "$arg_dev" -ne "$device_num" ]; then
           return 1
         fi
       fi
@@ -229,7 +237,7 @@ parse() {
     # Strip leading and trailing spaces from argument.
     arg_dev=$(echo "$bus_dev" | sed 's/^ *//; s/ *$//')
     if [ -n "$arg_dev" ]; then
-      if [ "$arg_dev" != "$device_num" ]; then
+      if [ "$arg_dev" -ne "$device_num" ]; then
         return 1
       fi
     fi
@@ -249,8 +257,13 @@ setup() {
   OIFS=$IFS
   IFS="#"
 
-  # Default exit code is failure, but if we match anything this will change to success.
-  exitcode=1
+  # Without -d/-s filters we always succeed, even with no devices attached
+  # (matches Linux lsusb). With a filter, exit 1 unless something matches.
+  if [ -n "$vid_pid" ] || [ -n "$bus_dev" ]; then
+    exitcode=1
+  else
+    exitcode=0
+  fi
 
   # Flag to know if -t option was set. We ignore filters if so.
   treeflag="no"
@@ -273,9 +286,15 @@ buildtreeline() {
   # So we start each line with the LocationID for sorting purposes, then append the rest of the line as we want it
   # Later, we'll do the sort, then strip off the LocationID for display purposes
 
-  spaces=$(echo "$locationID" | sed 's/^0x...//; s/0//g; s/./ /g; s/.*/&&&&/')
+  # Strip any trailing space left over from the pre-Tahoe "0x... / dev"
+  # location format, so the Location ID is always exactly 10 characters.
+  locationID="${locationID%%+( )}"
+
+  # Indent four spaces per tree level: after the 0x prefix and two-digit
+  # bus number, each nonzero digit is one level deep.
+  spaces=$(echo "$locationID" | sed 's/^0x..//; s/[^1-9a-fA-F]//g; s/./    /g')
   if [ ${#spaces} -eq 0 ]; then
-    spaces=" /:  "
+    spaces="/:  "
   else
     spaces="$spaces|__ "
   fi
@@ -283,8 +302,22 @@ buildtreeline() {
 }
 
 get_devices() {
-  sed <<<"$rawlog" -e '/:$/i\
-#'
+  # Split the log into sections at each "name:" line and emit only the
+  # sections that contain a Product ID line (i.e. actual devices),
+  # separated by '#' lines. Buses are handled by get_buses. This also
+  # excludes the top-level "USB:" header, Tahoe "USB 3.x Bus:" sections
+  # and pre-Tahoe "Media:"/"Volumes:" storage subsections.
+  awk <<<"$rawlog" -v first=1 '
+    function emit() {
+      if (buf ~ /Product ID/) {
+        if (first == 1) { first = 0 } else { print "#" }
+        printf "%s", buf
+      }
+      buf = ""
+    }
+    /:$/ { emit() }
+    { buf = buf $0 "\n" }
+    END { emit() }'
 }
 
 get_buses() {
@@ -316,9 +349,9 @@ tree() {
   # Sort by Location ID.
   treedata=$(echo "$treedata" | sort)
 
-  # Now strip off leading Location ID and print to stdout.
+  # Now strip off the leading 10-character Location ID and print to stdout.
   while IFS= read -r line; do
-    echo -e "$line"
+    printf '%s\n' "${line:10}"
   done <<<"$treedata"
 
   # Restore the IFS
@@ -371,23 +404,19 @@ setup
 # will not be interfered
 
 # Iterate over each entry
-if [ -z "$get_devices" ]; then
-  for device in $(get_devices); do
-    if parse; then
-      # Print the formatted entry
-      echo "Bus ""$bus_num"" Device ""$device_num"": ID ""$VID"":""$PID"" ""$manufacturer"" ""$name"" ""$serial_str"
-    fi
-  done
-fi
+for device in $(get_devices); do
+  if parse; then
+    # Print the formatted entry
+    echo "Bus ""$bus_num"" Device ""$device_num"": ID ""$VID"":""$PID"" ""$manufacturer"" ""$name"" ""$serial_str"
+  fi
+done
 
-if [ -n "$get_buses" ]; then
-  for device in $(get_buses); do
-    if parse; then
-      # Print the formatted entry
-      echo "Buses:" && echo "Bus ""$bus_num"" Device ""$device_num"": ID ""$VID"":""$PID"" ""$manufacturer"" ""$name"" ""$serial_str"
-    fi
-  done
-fi
+for device in $(get_buses); do
+  if parse; then
+    # Print the formatted entry
+    echo "Bus ""$bus_num"" Device ""$device_num"": ID ""$VID"":""$PID"" ""$manufacturer"" ""$name"" ""$serial_str"
+  fi
+done
 
 # Restore the IFS and exit
 cleanup
