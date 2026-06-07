@@ -100,12 +100,19 @@ parse() {
   fi
 
   # Get the device number. It's after the '/' in the Location ID, already decimal.
-  # Tahoe no longer reports device numbers; show 000 rather than inventing one.
+  # Tahoe no longer reports it there, but the bus address still exists in the
+  # IO Registry, so look it up by Location ID (000 if the device isn't found).
   device_num=$(echo "$location" | awk -F'/' '{print $2}')
-  if [[ -z $device_num ]]; then
-    device_num=0
+  if [[ -z $device_num && -n $location ]]; then
+    if [[ -z $dev_addresses ]]; then
+      dev_addresses=$(get_dev_addresses)
+    fi
+    loc_key="${location#0x}"
+    loc_key="${loc_key##+(0)}"
+    addr_hex=$(awk <<<"$dev_addresses" -v loc="$loc_key" '$1 == loc { print $2; exit }')
+    device_num=$((16#${addr_hex:-0}))
   fi
-  device_num=$(printf "%03d" "$device_num")
+  device_num=$(printf "%03d" "${device_num:-0}")
 
   # Strip off the excess from LocationID for sorting tree.
   locationID=$(echo "$location" | awk -F'/' '{print $1}')
@@ -322,6 +329,22 @@ get_devices() {
 
 get_buses() {
   awk <<<"$rawlog" -v first=1 '/Bus:$/ { flag = 1; if (first == 1) { first = 0 } else { print "#" }; print; next }; /:$/ && flag == 1 { flag = 0 }; flag'
+}
+
+get_dev_addresses() {
+  # Map each device's Location ID to its USB bus address from the IO
+  # Registry. Tahoe's system_profiler no longer reports device numbers
+  # (the pre-Tahoe "Location ID: 0x... / dev" suffix), but the addresses
+  # still exist in the IOUSB plane. Emit one "locationID address" pair
+  # per device, both in hex with the 0x prefix and leading zeros stripped.
+  ioreg -p IOUSB -l -x 2>/dev/null | awk '
+    /"locationID" = 0x/ { loc = $NF; sub(/^0x0*/, "", loc) }
+    /"USB Address" = 0x/ { addr = $NF; sub(/^0x0*/, "", addr) }
+    /^[ |]*}[ ]*$/ {
+      if (loc != "" && addr != "") { print loc " " addr }
+      loc = ""
+      addr = ""
+    }'
 }
 
 tree() {
