@@ -4,4 +4,4 @@ also_exclude:
 
 restylers:
   - shellharden:
-    enabled: false
+      enabled: false
