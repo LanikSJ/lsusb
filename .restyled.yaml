@@ -1,0 +1,7 @@
+also_exclude:
+  - doc/**/*
+  - .github/**/*
+
+restylers:
+  - shellharden:
+      enabled: false
