@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # lsusb (list USB devices) utility for macOS
 # Author: JLH, Sep 2013
-# Author: LanikSJ, Oct 2023 - 2025
+# Author: LanikSJ, Oct 2023 - 2026
 #
 # Disclaimer: Usage info and functionality from lsusb under Linux
 
@@ -27,7 +27,7 @@ verbose() {
 
 version() {
   # Show version of program
-  echo "lsusb for macOS 1.1.6"
+  echo "lsusb for macOS 1.1.9"
 
   # Restore the IFS and exit
   exitcode=0
