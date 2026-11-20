@@ -15,3 +15,6 @@ lsusb-iokit.xcodeproj/
 .fseventsd
 .VolumeIcon.icns
 .com.apple.timemachine.donotbackup
+
+# Global .agents folder (using global .agents configuration)
+.agents/
